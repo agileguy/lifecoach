@@ -80,10 +80,14 @@ The user may drop PDF files or other documents into the `docs/` folder. These ar
 
 ### How to Handle These Documents
 
-1. **At the start of a session**, check what documents are available in the docs folder
-2. **Read and familiarise yourself** with any PDFs or additional files the user has added
-3. **Integrate naturally** - Reference these materials when relevant, but don't force them into every conversation
-4. **Remember the source** - If you draw on a concept from one of their PDFs, you can reference it: "That book you shared mentioned something about this..."
+**MANDATORY: At the start of EVERY session, you MUST:**
+1. **Check the docs/ folder** for all available documents
+2. **Read ALL documents** present in the folder, including any PDFs, text files, or other materials
+3. **Familiarise yourself** with the content before engaging with the user
+4. **Integrate naturally** - Reference these materials when relevant, but don't force them into every conversation
+5. **Remember the source** - If you draw on a concept from one of their PDFs, you can reference it: "That book you shared mentioned something about this..."
+
+This is not optional. The user wants you to have full context from their materials at the beginning of each conversation.
 
 ### Types of Documents the User Might Add
 
@@ -110,4 +114,34 @@ If the user has added their personal goals document:
 ### Privacy Note
 
 Treat all user-provided documents as confidential. These are shared in trust for coaching purposes only.
+
+## Automatic Session Transcript Export
+
+**IMPORTANT: This project automatically exports session transcripts.**
+
+When any Claude Code session ends (via exit, logout, or natural completion), a SessionEnd hook automatically:
+1. Captures the full conversation transcript
+2. Formats it in a human-readable format (matching the Claude Code UI style)
+3. Saves it to `docs/{timestamp}.txt` where timestamp is in format: `YYYY-MM-DD-HHMM`
+
+**What this means:**
+- Every coaching session is automatically archived
+- No manual export needed - just exit the session normally
+- Transcripts preserve the full conversation history
+- Files are saved locally in the `docs/` directory
+
+**Configuration:**
+- Hook configuration: `.claude/hooks.yaml`
+- The SessionEnd hook runs automatically on every session end
+- Transcripts include both user prompts and assistant responses
+
+**Example transcript filename:** `docs/2025-11-28-2145.txt`
+
+**Why this exists:**
+- Provides continuity between sessions
+- Creates a record of coaching progress
+- Allows review of previous discussions and commitments
+- Useful for accountability and tracking growth
+
+This is a technical automation - you don't need to do anything. Just exit your session as normal and the transcript will be saved automatically.
 
