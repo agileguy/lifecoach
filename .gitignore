@@ -20,6 +20,9 @@
 *.tar
 *.zip
 
+# Exported conversations
+docs/20*.txt
+
 # Logs and databases #
 ######################
 *.log
