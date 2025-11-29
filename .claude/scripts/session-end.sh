@@ -94,19 +94,59 @@ echo "[$(date)] Transcript file found, processing..." >&2
   echo "  ▘▘ ▝▝    ~/lifecoach"
   echo ""
 
-  # Extract the conversation from JSONL format
+  # Extract the conversation from JSONL format with verbose mode details
   # Each line in JSONL is a complete JSON object
   while IFS= read -r line; do
-    # Try to extract role and content from each message
-    role=$(echo "$line" | jq -r '.role // ""')
-    content=$(echo "$line" | jq -r '.content // ""')
+    # Skip non-message lines (file-history-snapshot, summary, etc.)
+    msg_type=$(echo "$line" | jq -r '.type // ""')
+    if [ "$msg_type" != "user" ] && [ "$msg_type" != "assistant" ]; then
+      continue
+    fi
+
+    # Extract the nested message object
+    role=$(echo "$line" | jq -r '.message.role // ""')
+
+    # Check if content is a string or array
+    content_type=$(echo "$line" | jq -r '.message.content | type')
 
     if [ "$role" = "user" ]; then
-      echo "> $content"
-      echo ""
+      if [ "$content_type" = "string" ]; then
+        # Simple string content
+        content=$(echo "$line" | jq -r '.message.content')
+        echo "> $content"
+        echo ""
+      else
+        # Array of content blocks - handle tool_result
+        echo "$line" | jq -r '.message.content[] |
+          if .type == "text" then
+            "> " + .text
+          elif .type == "tool_result" then
+            "○ [" + .tool_use_id + "] Result:\n" + (.content | if type == "string" then . else tostring end)
+          else
+            empty
+          end'
+        echo ""
+      fi
     elif [ "$role" = "assistant" ]; then
-      echo "● $content"
-      echo ""
+      if [ "$content_type" = "string" ]; then
+        # Simple string content
+        content=$(echo "$line" | jq -r '.message.content')
+        echo "● $content"
+        echo ""
+      else
+        # Array of content blocks - process each type
+        echo "$line" | jq -r '.message.content[] |
+          if .type == "text" then
+            "● " + .text
+          elif .type == "thinking" then
+            "◆ Thinking:\n" + .thinking
+          elif .type == "tool_use" then
+            "◇ Tool: " + .name + "\n  Input: " + (.input | tostring)
+          else
+            empty
+          end'
+        echo ""
+      fi
     fi
   done < "$TRANSCRIPT_PATH"
 
