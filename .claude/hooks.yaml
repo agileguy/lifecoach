@@ -20,11 +20,11 @@ hooks:
       OUTPUT_FILE="${DOCS_DIR}/${TIMESTAMP}.txt"
 
       # Ensure docs directory exists
-      mkdir -p "$DOCS_DIR" 2>/dev/null || true
+      mkdir -p "$DOCS_DIR" || true
 
       # Check if transcript file exists
       if [ -z "$TRANSCRIPT_PATH" ] || [ ! -f "$TRANSCRIPT_PATH" ]; then
-        echo "Warning: Transcript file not found at: $TRANSCRIPT_PATH" >&2
+        echo "Warning: Transcript file not found at: $TRANSCRIPT_PATH"
         exit 0
       fi
 
@@ -40,8 +40,8 @@ hooks:
         # Each line in JSONL is a complete JSON object
         while IFS= read -r line; do
           # Try to extract role and content from each message
-          role=$(echo "$line" | jq -r '.role // ""' 2>/dev/null)
-          content=$(echo "$line" | jq -r '.content // ""' 2>/dev/null)
+          role=$(echo "$line" | jq -r '.role // ""')
+          content=$(echo "$line" | jq -r '.content // ""')
 
           if [ "$role" = "user" ]; then
             echo "> $content"
@@ -57,4 +57,4 @@ hooks:
       } > "$OUTPUT_FILE"
 
       # Print confirmation message
-      echo "Session transcript saved to: $OUTPUT_FILE" >&2
+      echo "Session transcript saved to: $OUTPUT_FILE" 
