@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Debug logging (optional - comment out if not needed)
-# LOG_FILE="$HOME/code-assistant-hook-debug.log"
-# echo "[$(date)] ===== SessionEnd hook invoked =====" >> "$LOG_FILE" 2>&1
-# exec 2>>"$LOG_FILE"
+# Debug logging
+LOG_FILE="/home/dan/lifecoach/hook-debug.log"
+echo "[$(date)] ===== SessionEnd hook invoked =====" >> "$LOG_FILE" 2>&1
+exec 2>>"$LOG_FILE"
 
 # Log all environment variables that might be relevant
 echo "[$(date)] Environment variables:" >&2
@@ -88,7 +88,7 @@ echo "[$(date)] Transcript file found, processing..." >&2
   echo ""
   echo " ▐▛███▜▌   Claude Code v2.0.55"
   echo "▝▜█████▛▘  Sonnet 4.5 · Claude Pro"
-  echo "  ▘▘ ▝▝    Code Assistant - Python Expert"
+  echo "  ▘▘ ▝▝    ~/lifecoach"
   echo ""
 
   # First pass: collect tool IDs that read from docs/ folder
