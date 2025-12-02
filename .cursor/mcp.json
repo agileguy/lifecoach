@@ -1,7 +1,10 @@
 {
     "mcpServers": {
-        "calendar-test": {
+        "calendar": {
             "url": "https://automate.agileguy.ca/mcp/63115d71-cd09-43f0-8616-07e81476f665"
+        },
+        "gmail": {
+            "url": "https://automate.agileguy.ca/mcp/79625fbf-9026-4320-97d7-59ef634dc2b3"
         }
     }
 }
