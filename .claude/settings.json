@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/dan/lifecoach/.claude/scripts/session-end.sh"
+            "command": ".claude/scripts/session-end.sh"
           }
         ]
       }
